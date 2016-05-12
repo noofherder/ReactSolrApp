@@ -1,0 +1,25 @@
+{
+  "name": "react-redux-solr-app",
+  "version": "0.1.0",
+  "description": "Example search app using React, Redux, Node.js and Solr",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noofherder/ReactSolrApp.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/noofherder/ReactSolrApp/issues"
+  },
+  "homepage": "https://github.com/noofherder/ReactSolrApp#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  },
+  "devDependencies": {
+    "webpack": "^1.13.0"
+  }
+}
