@@ -13,13 +13,13 @@
         bord0er: 1px solid pink;
       }
       .app_vsp03 {
-        margin-top: 3px
+        margin-top: 3px;
       }
       .app_vsp05 {
-        margin-top: 5px
+        margin-top: 5px;
       }
       .app_vsp15 {
-        margin-top: 15px
+        margin-top: 15px;
       }
       .app_hit {
         margin-bottom: 10px;
@@ -53,7 +53,7 @@
       <!-- the search box -->
       <div class="row">
         <form class="navbar-form" role="search">
-          <div class="input-group col-sm-6">
+          <div class="input-group col-sm-8">
             <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
             <div class="input-group-btn">
               <button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i></button>
@@ -62,10 +62,8 @@
         </form>
       </div>
 
-      <div class="app_vsp05"></div>
-
       <!-- the search stats -->
-      <div class="row">
+      <div class="row app_vsp05">
         <div class="col-sm-8">
           1-20 of 687162 results (search time 0.3s)
         </div>
@@ -76,9 +74,7 @@
 
       </div>
 
-      <div class="app_vsp15"></div>
-
-      <div class="row">
+      <div class="row app_vsp15">
         <!-- the results -->
         <div class="col-sm-8 app_pink">
           <div class="app_hit">
@@ -97,17 +93,16 @@
         <!-- the facets -->
         <div class="col-sm-4 app_pink">
           <h5>Source:</h5>
-          <div>This thing</div>
-          <div>That thing</div>
-          <div><em>all</em></div>
-          <div><em>clear</em></div>
+          <div><input type="checkbox"> This thing</div>
+          <div><input type="checkbox"> That thing</div>
+          <div><em>any</em></div>
 
           <h5 class="app_vsp15">Published:</h5>
-          <div>This week</div>
+          <div><a href="#">This week</a></div>
           <div>This month</div>
           <div>This year</div>
           <div>Past five years</div>
-          <div><em>any date</em></div>
+          <div><em>any</em></div>
 
           <h5 class="app_vsp15">Wordcount:</h5>
           <div>0-100</div>
@@ -115,14 +110,12 @@
           <div>501-1000</div>
           <div>1001-5000</div>
           <div>5001-</div>
-          <div><em>any count</em></div>
+          <div><em>any</em></div>
 
         </div>
       </div>
 
-      <div class="app_vsp05"></div>
-
-      <div class="row">
+      <div class="row app_vsp05">
         <!-- the pager -->
         <div class="col-sm-8">
           <div class="app_pager">
@@ -130,10 +123,9 @@
           </div>
         </div>
       </div>
+    </div><!-- container -->
 
-      <div class="app_vsp15"></div>
-
-    </div>
+    <div class="app_vsp15"></div>
 
   </body>
 </html>
