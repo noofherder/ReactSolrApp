@@ -1,10 +1,52 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-const FacetList = (props) =>
-  <ul className="app_ul">
-    <li><input type="checkbox"/> This thing thing thing thing thing</li>
-    <li><input type="checkbox"/> That thing</li>
-    <li><em>any</em></li>
+/*
+ * props should be like: {
+ *    multiselect = true|false (defaults to false)
+ *    facets = [
+ *        { label, filter, selected }
+ *    ]
+ *
+ * filter should be unique for each facet
+ */
+
+const FacetList = (props) => {
+  let facets = null;
+  if (props.multiselect) {
+    facets = props.facets.map((x) => {
+      const key = "facet_" + x.filter;
+      return <li key={key}>
+        <input id={key} type="checkbox" value={x.filter} defaultChecked={x.selected}/>
+        {" "}
+        <label for={key}>{x.label}</label>
+      </li>;
+    });
+  } else {
+    facets = props.facets.map((x) => {
+      const key = "facet_" + x.filter;
+      return <li key={key}>
+        <a href="#"><label>{x.label}</label></a>
+      </li>;
+    });
+  }
+
+  const any = props.facets.find(x => x.selected) === undefined ?
+    <em>any</em> :
+    <a href="#"><em>any</em></a>;
+
+  return <ul className="app_ul">
+    {facets}
+    <li>{any}</li>
   </ul>;
+};
 
-  export default FacetList;
+FacetList.propTypes = {
+  multiselect: PropTypes.bool,
+  facets: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    filter: PropTypes.string,
+    selected: PropTypes.bool
+  }))
+};
+
+export default FacetList;
