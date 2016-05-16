@@ -1,18 +1,27 @@
-import React from 'react';
+import React, { PropTypes }  from 'react';
 
-const Results = (props) =>
-  <div className="col-sm-8 app_pink">
-    <div className="app_hit">
-      <div><strong><a href="#">wombat wombat wombat</a></strong></div>
+const Results = (props) => {
 
-      <div className="app_vsp03">wibble wibble <mark>foobar</mark> wibble wibble wibble wibble wibble wibble wibble wibble wibble wibble wibble <mark>foobar</mark> wibble wibble wibble wibble wibble wibble <mark>foobar</mark> wibble wibble wibble wibble</div>
-
+  const results = props.searchResults.map((hit) => {
+    const sample = { __html: hit.sample };
+    return <div key={hit.id} className="app_hit">
+      <div><strong><a href="#">{hit.title}</a></strong></div>
+      <div className="app_vsp03" dangerouslySetInnerHTML={sample}></div>
       <div className="text-muted app_vsp03">
-        Source: <em>Spam and eggs</em>
-        &nbsp;Published: <em>15 December 2009</em>
-        &nbsp;Wordcount: <em>786</em>
+        Source: <em>{hit.source}</em>
+        &nbsp;&nbsp;Published: <em>{hit.published}</em>
+        &nbsp;&nbsp;Wordcount: <em>{hit.wordcount}</em>
       </div>
-    </div>
+    </div>;
+  });
+
+  return <div className="col-sm-8">
+    {results}
   </div>;
+};
+
+Results.propTypes = {
+  results: PropTypes.arrayOf(PropTypes.object)
+};
 
 export default Results;

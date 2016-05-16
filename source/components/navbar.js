@@ -4,7 +4,7 @@ const NavBar = (props) =>
   <nav className="navbar navbar-inverse navbar-static-top">
     <div className="container">
       <div className="navbar-header">
-        <a className="navbar-brand" href="#">React Redux Solr Example</a>
+        <a className="navbar-brand" href="#">React Solr Example</a>
       </div>
       <div id="navbar" className="collapse navbar-collapse">
         <ul className="nav navbar-nav">
