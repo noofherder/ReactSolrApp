@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react';
 
 /*
- * props should be like: {
+ * A component implementing a simple facet list.
+ *
+ * props should be like:
  *    multiselect = true|false (defaults to false)
  *    facets = [
  *        { label, filter, selected }
@@ -30,7 +32,7 @@ const FacetList = (props) => {
     facets = props.facets.map((x) => {
       const key = "facet_" + x.filter;
       if (x.selected) {
-        return <li key={key}><label>{x.label}</label></li>;
+        return <li key={key}><label className="app_bold">{x.label}</label></li>;
       } else {
         return <li key={key}>
           <a href="#"><label>{x.label}</label></a>

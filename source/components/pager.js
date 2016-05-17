@@ -1,8 +1,18 @@
 import React, { PropTypes } from 'react';
 
+/*
+ * A component implementing a simple pager.
+ *
+ * props are:
+ *  pageSize: integer (max results per page)
+ *  numFound: total number of results found
+ *  start: the offset of the first result on this page
+ *  len: the number of results on this page
+ */
+
 const Pager = (props) => {
-  const thisPage = Math.floor(props.searchStats.start / props.pageSize);
-  const lastPage = Math.ceil(props.searchStats.numFound / props.pageSize) - 1;
+  const thisPage = Math.floor(props.start / props.pageSize);
+  const lastPage = Math.ceil(props.numFound / props.pageSize) - 1;
   const fromPage = Math.max(thisPage - 1, 0);
   const lastNumberedPage = Math.min(fromPage + 2, lastPage);
   let pages = [];
@@ -35,13 +45,10 @@ const Pager = (props) => {
 };
 
 Pager.propTypes = {
-  searchStats: PropTypes.shape({
-    qtime: PropTypes.number,
-    numFound: PropTypes.number,
-    start: PropTypes.number,
-    len: PropTypes.number
-  }),
-  pageSize: PropTypes.number
+  numFound: PropTypes.number.isRequired,
+  start: PropTypes.number.isRequired,
+  len: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired
 };
 
 export default Pager;

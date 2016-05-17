@@ -5,16 +5,14 @@ import Results from './results';
 import FacetList from './facetlist';
 import Pager from './pager';
 
-
 const data = {
   query: "React is awesome",
-  searchStats: {
+  stats: {
     qtime: 27,
     numFound: 7526,
-    start: 30,
-    len: 10
+    start: 0
   },
-  searchResults: [
+  results: [
     { id: 1,
       title: "Alaska boundary dispute",
       sample: "The <mark>Alaska boundary dispute</mark> was a territorial dispute between the United States and the United Kingdom, which then controlled Canada's foreign relations.",
@@ -57,15 +55,18 @@ const SearchApp = (props) => {
 
   if (data.query) {
     row2 = <div className="row app_vsp05">
-      <Stats searchStats={data.searchStats}/>
+      <Stats qtime={data.stats.qtime}
+        numFound={data.stats.numFound}
+        start={data.stats.start}
+        len={data.results.length} />
       <div className="col-sm-4">
         <strong>Refine search</strong>
       </div>
     </div>;
 
-    if (data.searchResults) {
+    if (data.results) {
       row3 = <div className="row app_vsp15">
-        <Results searchResults={data.searchResults}/>
+        <Results searchResults={data.results}/>
         <div className="col-sm-4">
           <h5>Source:</h5>
           <FacetList multiselect={true} facets={data.facets.source} />
@@ -79,11 +80,13 @@ const SearchApp = (props) => {
       </div>;
 
       // only show pager if required
-      if (data.searchStats.start > 0 ||
-          data.searchStats.numFound > data.searchStats.len) {
+      if (data.stats.start > 0 || data.stats.numFound > data.results.length) {
         row4 = <div className="row app_vsp05">
           <div className="col-sm-8">
-            <Pager searchStats={data.searchStats} pageSize={10}/>
+            <Pager numFound={data.stats.numFound}
+              start={data.stats.start}
+              len={data.results.length}
+              pageSize={10} />
           </div>
         </div>;
       }

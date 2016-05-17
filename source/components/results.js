@@ -1,5 +1,12 @@
 import React, { PropTypes }  from 'react';
 
+/*
+ * A component implementing a simple results list.
+ *
+ * props are:
+ *  results: an array of objects holding data for each result
+ */
+
 const Results = (props) => {
 
   const results = props.searchResults.map((hit) => {
@@ -21,7 +28,7 @@ const Results = (props) => {
 };
 
 Results.propTypes = {
-  results: PropTypes.arrayOf(PropTypes.object)
+  results: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default Results;

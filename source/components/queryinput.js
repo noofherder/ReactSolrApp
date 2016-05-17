@@ -1,5 +1,12 @@
 import React, { PropTypes }  from 'react';
 
+/*
+ * A component implementing a simple query input
+ *
+ * props are:
+ *  query: the query string
+ */
+
 const QueryInput = (props) =>
   <form className="navbar-form" role="search">
     <div className="input-group col-sm-8">
