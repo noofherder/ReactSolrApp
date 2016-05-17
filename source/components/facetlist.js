@@ -29,9 +29,13 @@ const FacetList = (props) => {
   } else {
     facets = props.facets.map((x) => {
       const key = "facet_" + x.filter;
-      return <li key={key}>
-        <a href="#"><label>{x.label}</label></a>
-      </li>;
+      if (x.selected) {
+        return <li key={key}><label>{x.label}</label></li>;
+      } else {
+        return <li key={key}>
+          <a href="#"><label>{x.label}</label></a>
+        </li>;
+      }
     });
   }
 
