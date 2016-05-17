@@ -10,9 +10,9 @@ import React, { PropTypes } from 'react';
  *  len: the number of results on this page
  */
 
-const Pager = (props) => {
-  const thisPage = Math.floor(props.start / props.pageSize);
-  const lastPage = Math.ceil(props.numFound / props.pageSize) - 1;
+const Pager = ({start, numFound, pageSize=10}) => {
+  const thisPage = Math.floor(start / pageSize);
+  const lastPage = Math.ceil(numFound / pageSize) - 1;
   const fromPage = Math.max(thisPage - 1, 0);
   const lastNumberedPage = Math.min(fromPage + 2, lastPage);
   let pages = [];

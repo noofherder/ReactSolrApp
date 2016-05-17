@@ -12,15 +12,15 @@ import React, { PropTypes } from 'react';
  * filter should be unique for each facet
  */
 
-const FacetList = (props) => {
-  let facets = null;
+const FacetList = ({facets=[], multiselect=false}) => {
+  let facitems = null;
   /*
    * the <li> elements are different depending on whether we have multiselect
    * facets. If so, we use checkboxes to make this obvious. Otherwise, we
    * use links.
    */
-  if (props.multiselect) {
-    facets = props.facets.map((x) => {
+  if (multiselect) {
+    facitems = facets.map((x) => {
       const key = "facet_" + x.filter;
       return <li key={key}>
         <input id={key} type="checkbox" value={x.filter} checked={x.selected}/>
@@ -29,7 +29,7 @@ const FacetList = (props) => {
       </li>;
     });
   } else {
-    facets = props.facets.map((x) => {
+    facitems = facets.map((x) => {
       const key = "facet_" + x.filter;
       if (x.selected) {
         return <li key={key}><label className="app_bold">{x.label}</label></li>;
@@ -44,12 +44,12 @@ const FacetList = (props) => {
   /*
    * the "any" link should only be active when a facet is selected
    */
-  const any = props.facets.find(x => x.selected) === undefined ?
+  const any = facets.find(x => x.selected) === undefined ?
     <em>any</em> :
     <a href="#"><em>any</em></a>;
 
   return <ul className="app_ul">
-    {facets}
+    {facitems}
     <li>{any}</li>
   </ul>;
 };

@@ -10,7 +10,7 @@ const data = {
   stats: {
     qtime: 27,
     numFound: 7526,
-    start: 0
+    start: 50
   },
   results: [
     { id: 1,

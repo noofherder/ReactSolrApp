@@ -7,9 +7,9 @@ import React, { PropTypes }  from 'react';
  *  results: an array of objects holding data for each result
  */
 
-const Results = (props) => {
+const Results = ({searchResults}) => {
 
-  const results = props.searchResults.map((hit) => {
+  const results = searchResults.map((hit) => {
     const sample = { __html: hit.sample };
     return <div key={hit.id} className="app_hit">
       <div><strong><a href="#">{hit.title}</a></strong></div>
@@ -28,7 +28,7 @@ const Results = (props) => {
 };
 
 Results.propTypes = {
-  results: PropTypes.arrayOf(PropTypes.object).isRequired
+  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default Results;
