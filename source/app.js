@@ -6,7 +6,7 @@ import SearchApp from './components/searchapp';
 const App = (props) =>
   <dev>
     <NavBar/>
-    <SearchApp/>
+    <SearchApp query="Webpack rocks"/>
   </dev>;
 
 ReactDOM.render(<App/>, document.getElementById('app'));

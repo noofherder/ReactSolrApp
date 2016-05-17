@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import QueryInput from './queryinput';
 import Stats from './stats';
 import Results from './results';
 import FacetList from './facetlist';
 import Pager from './pager';
 
-const data = {
-  query: "React is awesome",
+const mockResponse = {
   stats: {
     qtime: 27,
     numFound: 7526,
@@ -48,57 +47,68 @@ const data = {
   }
 };
 
-const SearchApp = (props) => {
-  let row2 = null;
-  let row3 = null;
-  let row4 = null;
+class SearchApp extends Component {
+  constructor() {
+    super(...arguments);
+    this.state = {
+      response: mockResponse
+    };
+  }
 
-  if (data.query) {
-    row2 = <div className="row app_vsp05">
-      <Stats qtime={data.stats.qtime}
-        numFound={data.stats.numFound}
-        start={data.stats.start}
-        len={data.results.length} />
-      <div className="col-sm-4">
-        <strong>Refine search</strong>
-      </div>
-    </div>;
+  render() {
+    let row2 = null;
+    let row3 = null;
+    let row4 = null;
 
-    if (data.results) {
-      row3 = <div className="row app_vsp15">
-        <Results searchResults={data.results}/>
+    const resp = this.state.response;
+
+    if (this.props.query) {
+      row2 = <div className="row app_vsp05">
+        <Stats qtime={resp.stats.qtime}
+          numFound={resp.stats.numFound}
+          start={resp.stats.start}
+          len={resp.results.length} />
         <div className="col-sm-4">
-          <h5>Source:</h5>
-          <FacetList multiselect={true} facets={data.facets.source} />
-
-          <h5 className="app_vsp15">Published:</h5>
-          <FacetList facets={data.facets.published}/>
-
-          <h5 className="app_vsp15">Word count:</h5>
-          <FacetList facets={data.facets.wordcount} />
+          <strong>Refine search</strong>
         </div>
       </div>;
 
-      // only show pager if required
-      if (data.stats.start > 0 || data.stats.numFound > data.results.length) {
-        row4 = <div className="row app_vsp05">
-          <div className="col-sm-8">
-            <Pager numFound={data.stats.numFound}
-              start={data.stats.start}
-              len={data.results.length}
-              pageSize={10} />
+      if (resp.results) {
+        row3 = <div className="row app_vsp15">
+          <Results searchResults={resp.results}/>
+          <div className="col-sm-4">
+            <h5>Source:</h5>
+            <FacetList multiselect={true} facets={resp.facets.source} />
+
+            <h5 className="app_vsp15">Published:</h5>
+            <FacetList facets={resp.facets.published}/>
+
+            <h5 className="app_vsp15">Word count:</h5>
+            <FacetList facets={resp.facets.wordcount} />
           </div>
         </div>;
+
+        // only show pager if required
+        if (resp.stats.start > 0 || resp.stats.numFound > resp.results.length) {
+          row4 = <div className="row app_vsp05">
+            <div className="col-sm-8">
+              <Pager numFound={resp.stats.numFound}
+                start={resp.stats.start}
+                len={resp.results.length}
+                pageSize={10} />
+            </div>
+          </div>;
+        }
       }
     }
-  }
 
-  return <div className="container">
-    <div className="row">
-      <QueryInput query={data.query}/>
-    </div>
-    {row2} {row3} {row4}
-  </div>;
-};
+    return <div className="container">
+      <div className="row">
+        <QueryInput query={this.props.query}/>
+      </div>
+      {row2} {row3} {row4}
+    </div>;
+  }
+}
 
 export default SearchApp;
