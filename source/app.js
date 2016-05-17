@@ -1,12 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router, Route, Redirect, Link } from 'react-router';
 import NavBar from './components/navbar';
 import SearchApp from './components/searchapp';
 
 const App = (props) =>
-  <dev>
+  <div>
     <NavBar/>
-    <SearchApp query="Webpack rocks"/>
-  </dev>;
+    {props.children}
+  </div>;
 
-ReactDOM.render(<App/>, document.getElementById('app'));
+const About = () =>
+  <h1>About</h1>;
+
+const Contact = () =>
+  <h1>Contact</h1>;
+
+const RoutedApp = () =>
+  <Router>
+    <Redirect from="/" to="/search" />
+    <Route path="/" component={App}>
+      <Route path="search" component={SearchApp} />
+      <Route path="about" component={About} />
+      <Route path="contact" component={Contact} />
+    </Route>
+  </Router>;
+
+ReactDOM.render(<RoutedApp/>, document.getElementById('app'));

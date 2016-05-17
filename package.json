@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/noofherder/ReactSolrApp#readme",
   "dependencies": {
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "react-router": "^2.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.8.0",

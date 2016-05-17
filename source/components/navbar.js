@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const NavBar = (props) =>
   <nav className="navbar navbar-inverse navbar-static-top">
@@ -8,9 +9,9 @@ const NavBar = (props) =>
       </div>
       <div id="navbar" className="collapse navbar-collapse">
         <ul className="nav navbar-nav">
-          <li className="active"><a href="#">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><Link activeClassName="app_ul" to="/search">Search</Link></li>
+          <li><Link activeClassName="app_ul" to="/about">About</Link></li>
+          <li><Link activeClassName="app_ul" to="/contact">Contact</Link></li>
         </ul>
       </div>
     </div>
