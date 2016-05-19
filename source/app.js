@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Redirect, Link } from 'react-router';
+import { Router, Route, Redirect, Link, hashHistory } from 'react-router';
 import NavBar from './components/navbar';
 import SearchApp from './components/searchapp';
 
@@ -17,7 +17,7 @@ const Contact = () =>
   <h1>Contact</h1>;
 
 const RoutedApp = () =>
-  <Router>
+  <Router history={hashHistory}>
     <Redirect from="/" to="/search" />
     <Route path="/" component={App}>
       <Route path="search" component={SearchApp} />
