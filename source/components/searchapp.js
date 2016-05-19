@@ -47,8 +47,6 @@ const mockResponse = {
   }
 };
 
-const mockQuery = "Webpack rules";
-
 class SearchApp extends Component {
   constructor() {
     super(...arguments);
@@ -62,9 +60,10 @@ class SearchApp extends Component {
     let row3 = null;
     let row4 = null;
 
+    const query = this.props.location.query.query;
     const resp = this.state.response;
 
-    if (mockQuery) {
+    if (query) {
       row2 = <div className="row app_vsp05">
         <Stats qtime={resp.stats.qtime}
           numFound={resp.stats.numFound}
@@ -106,10 +105,16 @@ class SearchApp extends Component {
 
     return <div className="container">
       <div className="row">
-        <QueryInput query={mockQuery}/>
+        <QueryInput initialQuery={query} onQuerySubmit={this.onQuerySubmit.bind(this)}/>
       </div>
       {row2} {row3} {row4}
     </div>;
+  }
+
+  onQuerySubmit(newQuery) {
+    // this confused me for ages - previously:
+    //this.props.history.push({query:newQuery});
+    this.props.history.push({query:{query:newQuery}});
   }
 }
 
