@@ -48,8 +48,8 @@ const mockResponse = {
 };
 
 class SearchApp extends Component {
-  constructor() {
-    super(...arguments);
+  constructor(props, context) {
+    super(props, context);
     this.state = {
       response: mockResponse
     };
@@ -114,8 +114,12 @@ class SearchApp extends Component {
   onQuerySubmit(newQuery) {
     // this confused me for ages - previously:
     //this.props.history.push({query:newQuery});
-    this.props.history.push({query:{query:newQuery}});
+    this.context.router.push({query:{query:newQuery}});
   }
 }
+
+SearchApp.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
 
 export default SearchApp;
