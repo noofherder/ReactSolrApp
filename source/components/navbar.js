@@ -9,9 +9,9 @@ const NavBar = (props) =>
       </div>
       <div id="navbar" className="collapse navbar-collapse">
         <ul className="nav navbar-nav">
-          <li><Link activeClassName="app_ul" to="/search">Search</Link></li>
-          <li><Link activeClassName="app_ul" to="/about">About</Link></li>
-          <li><Link activeClassName="app_ul" to="/contact">Contact</Link></li>
+          <li><Link activeClassName="app_underline" to="/search">Search</Link></li>
+          <li><Link activeClassName="app_underline" to="/about">About</Link></li>
+          <li><Link activeClassName="app_underline" to="/contact">Contact</Link></li>
         </ul>
       </div>
     </div>
