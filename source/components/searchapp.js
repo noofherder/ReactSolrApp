@@ -79,13 +79,16 @@ class SearchApp extends Component {
           <Results searchResults={resp.results}/>
           <div className="col-sm-4">
             <h5>Source:</h5>
-            <FacetList multiselect={true} facets={resp.facets.source} />
+            <FacetList multiselect={true} facets={resp.facets.source}
+             onSetFilter={this.setFilter.bind(this)} />
 
             <h5 className="app_vsp15">Published:</h5>
-            <FacetList facets={resp.facets.published}/>
+            <FacetList facets={resp.facets.published}
+             onSetFilter={this.setFilter.bind(this)} />
 
             <h5 className="app_vsp15">Word count:</h5>
-            <FacetList facets={resp.facets.wordcount} />
+            <FacetList facets={resp.facets.wordcount}
+             onSetFilter={this.setFilter.bind(this)} />
           </div>
         </div>;
 
@@ -105,16 +108,20 @@ class SearchApp extends Component {
 
     return <div className="container">
       <div className="row">
-        <QueryInput initialQuery={query} onQuerySubmit={this.onQuerySubmit.bind(this)}/>
+        <QueryInput initialQuery={query} onQuerySubmit={this.setQuery.bind(this)}/>
       </div>
       {row2} {row3} {row4}
     </div>;
   }
 
-  onQuerySubmit(newQuery) {
+  setQuery(newQuery) {
     // this confused me for ages - previously:
     //this.props.history.push({query:newQuery});
     this.context.router.push({query:{query:newQuery}});
+  }
+
+  setFilter(filter, applied) {
+    console.log("FIXME setFilter: " + filter + " " + applied);
   }
 }
 
