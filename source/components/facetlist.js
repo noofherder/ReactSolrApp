@@ -66,9 +66,9 @@ class FacetList extends Component {
     </ul>;
   }
 
-  setFilter(filter, applied) {
+  setFilter(filter, apply) {
     if (this.props.onSetFilter) {
-      this.props.onSetFilter(filter, applied);
+      this.props.onSetFilter(filter, apply);
     }
   }
 }

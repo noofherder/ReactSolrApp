@@ -5,6 +5,8 @@ import Results from './results';
 import FacetList from './facetlist';
 import Pager from './pager';
 
+import update from 'react-addons-update';
+
 const mockResponse = {
   stats: {
     qtime: 27,
@@ -115,13 +117,36 @@ class SearchApp extends Component {
   }
 
   setQuery(newQuery) {
-    // this confused me for ages - previously:
-    //this.props.history.push({query:newQuery});
-    this.context.router.push({query:{query:newQuery}});
+    // use react-addons-update to merge our new query param into the URL query-string
+    this.context.router.push({
+      query: update(this.props.location.query, { query: { $set: newQuery }})
+    });
   }
 
-  setFilter(filter, applied) {
-    console.log("FIXME setFilter: " + filter + " " + applied);
+  setFilter(newFilter, apply) {
+    // clone any existing filters into a new array
+    let filters = [];
+    if (this.props.location.query.filter) {
+      if (this.props.location.query.filter instanceof Array) {
+        filters = this.props.location.query.filter.slice(0);
+      } else {
+        filters = [ this.props.location.query.filter ];
+      }
+    }
+
+    if (apply && !filters.includes(newFilter)) {
+      // add the new filter
+      filters.push(newFilter);
+    }
+    else if (!apply) {
+      // or remove it
+      filters = filters.filter(x => x != newFilter);
+    }
+
+    console.log(filters);
+    this.context.router.push({
+      query: update(this.props.location.query, { filter: { $set: filters }})
+    });
   }
 }
 
