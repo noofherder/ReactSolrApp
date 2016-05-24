@@ -5,22 +5,47 @@ class SearchAppContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      response: mockResponse
+      response: null
     };
+    console.log("SearchAppContainer.constructor");
+    console.log(props);
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount");
+    this.doSearch(this.props);
+  }
+
+  componentWillReceiveProps(newProps) {
+    console.log("componentWillReceiveProps");
+    console.log(newProps);
+    this.doSearch(newProps);
+  }
+
+  doSearch(props) {
+    this.setState({ response: null, busy: true });
+
+    const qp = this.getQueryParams(props);
+    if (qp.query) {
+      this.props.searchService(qp, (response) => {
+        console.log("setting response from searchService");
+        this.setState({ response, busy: false });
+      });
+    }
   }
 
   /*
    * should return { query: string, filters: list-of-strings }
    */
-  getQueryParams() {
-    const query = this.props.location.query.q || '';
+  getQueryParams(props) {
+    const query = props.location.query.q || '';
 
     let filters = [];
-    if (this.props.location.query.fq) {
-      if (this.props.location.query.fq instanceof Array) {
-        filters = this.props.location.query.fq.slice(0);
+    if (props.location.query.fq) {
+      if (props.location.query.fq instanceof Array) {
+        filters = props.location.query.fq.slice(0);
       } else {
-        filters = [ this.props.location.query.fq ];
+        filters = [ props.location.query.fq ];
       }
     }
 
@@ -35,10 +60,16 @@ class SearchAppContainer extends Component {
   }
 
   render() {
-    return <SearchApp queryParams={this.getQueryParams()}
-                      searchResults={this.state.response}
-                      setQueryParams={this.setQueryParams.bind(this)}
-            />
+    const busy = this.state.busy ? <div className="container">
+      <h4>searching...</h4></div> : null;
+
+    return <div>
+      <SearchApp queryParams={this.getQueryParams(this.props)}
+                 searchResults={this.state.response}
+                 setQueryParams={this.setQueryParams.bind(this)}
+      />
+      {busy}
+    </div>;
   }
 }
 
@@ -46,46 +77,8 @@ SearchAppContainer.contextTypes = {
     router: PropTypes.object.isRequired
 };
 
-export default SearchAppContainer;
-
-////////// FIXME ///////////
-
-const mockResponse = {
-  queryTime: 27,
-  totalFound: 7526,
-  start: 50,
-  results: [
-    { id: 1,
-      title: "Alaska boundary dispute",
-      sample: "The <mark>Alaska boundary dispute</mark> was a territorial dispute between the United States and the United Kingdom, which then controlled Canada's foreign relations.",
-      source: "Wikipedia",
-      published: "14 May 2016",
-      wordcount: 2345
-    },
-    { id: 2,
-      title: "Grace Inez Crawford",
-      sample: "<mark>Grace Inez Crawford</mark>, also known as Grace Lovat Fraser (1889–1977) was a singer, actress, costume designer, translator of plays, and author of several books.",
-      source:  "Wikipedia",
-      published: "14 April 2016",
-      wordcount: 789
-    }
-  ],
-  facets: {
-    source: [
-      { label: "The Guardian", filter: "a1", selected: false },
-      { label: "The Independent", filter: "a2", selected: false },
-      { label: "Prospect", filter: "a3" , selected: true }
-    ],
-    published: [
-      { label: "Last week", filter: "b1" , selected: false },
-      { label: "Last month", filter: "b2", selected: true },
-      { label: "Last year", filter: "b3", selected: false },
-      { label: "Last five years", filter: "b4", selected: false }
-    ],
-    wordcount: [
-      { label: "1-100", filter: "c1", selected: false },
-      { label: "100-1000", filter: "c2", selected: false },
-      { label: "1000-any", filter: "c3", selected: false }
-    ]
-  }
+SearchAppContainer.propTypes = {
+  searchService: PropTypes.func.isRequired
 };
+
+export default SearchAppContainer;

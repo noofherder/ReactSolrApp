@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom';
 import { Router, Route, Redirect, Link, hashHistory } from 'react-router';
 import NavBar from './components/navbar';
 import SearchAppContainer from './components/searchappcontainer';
+import { makeSearchService } from './services/mocksearchservice';
+//import solrConfig from './conf/solrconf';
+
+//const searchService = SearchServiceFactory.makeSearchService(solrConf);
+const searchService = makeSearchService();
 
 const App = (props) =>
   <div>
@@ -16,11 +21,16 @@ const About = () =>
 const Contact = () =>
   <h1>Contact</h1>;
 
+// set the searchService on the SearchAppContainer.
+// need to explictly pass props.location from Router, otherwise it is lost.
+const SearchAppContainer2 = (props) =>
+  <SearchAppContainer location={props.location} searchService={searchService}/>;
+
 const RoutedApp = () =>
   <Router history={hashHistory}>
     <Redirect from="/" to="/search" />
     <Route path="/" component={App}>
-      <Route path="search" component={SearchAppContainer} />
+      <Route path="search" component={SearchAppContainer2} />
       <Route path="about" component={About} />
       <Route path="contact" component={Contact} />
     </Route>

@@ -16,7 +16,7 @@ class SearchApp extends Component {
     const qp = this.props.queryParams;
     const sr = this.props.searchResults;
 
-    if (qp.query) {
+    if (sr) {
       row2 = <div className="row app_vsp05">
         <Stats qtime={sr.queryTime}
           numFound={sr.totalFound}
@@ -97,8 +97,8 @@ class SearchApp extends Component {
 }
 
 SearchApp.propTypes = {
-  queryParams: PropTypes.object.isRequired,
-  searchResults: PropTypes.object.isRequired,
+  queryParams: PropTypes.object,
+  searchResults: PropTypes.object,
   setQueryParams: PropTypes.func.isRequired
 };
 
