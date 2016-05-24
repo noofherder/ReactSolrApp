@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import QueryInput from './queryinput';
 import Stats from './stats';
 import Results from './results';
@@ -95,5 +95,11 @@ class SearchApp extends Component {
     );
   }
 }
+
+SearchApp.propTypes = {
+  queryParams: PropTypes.object.isRequired,
+  searchResults: PropTypes.object.isRequired,
+  setQueryParams: PropTypes.func.isRequired
+};
 
 export default SearchApp;
