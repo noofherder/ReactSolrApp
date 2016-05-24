@@ -59,10 +59,13 @@ class SearchApp extends Component {
       }
     }
 
+    const busy = this.props.busy ? <h4>searching...</h4> : null;
+    
     return <div className="container">
       <div className="row">
         <QueryInput initialQuery={qp.query} onQuerySubmit={this.setQuery.bind(this)}/>
       </div>
+      {busy}
       {row2} {row3} {row4}
     </div>;
   }
@@ -99,6 +102,7 @@ class SearchApp extends Component {
 SearchApp.propTypes = {
   queryParams: PropTypes.object,
   searchResults: PropTypes.object,
+  busy: PropTypes.bool,
   setQueryParams: PropTypes.func.isRequired
 };
 

@@ -11,18 +11,31 @@ class SearchAppContainer extends Component {
     console.log(props);
   }
 
+  /*
+   * When the component mounts, do an initial search in case there is a
+   * query in the location.
+   */
   componentDidMount() {
     console.log("componentDidMount");
     this.doSearch(this.props);
   }
 
+  /*
+   * something has changed, probably the location. Update the search results.
+   */
   componentWillReceiveProps(newProps) {
     console.log("componentWillReceiveProps");
     console.log(newProps);
     this.doSearch(newProps);
   }
 
+  /*
+   * pass the query params to the search service and get the search results.
+   * we need to pass props rather than use this.props because of the way that
+   * componentDidMount() works.
+   */
   doSearch(props) {
+    // first, blank existing results and set busy indicator
     this.setState({ response: null, busy: true });
 
     const qp = this.getQueryParams(props);
@@ -31,6 +44,8 @@ class SearchAppContainer extends Component {
         console.log("setting response from searchService");
         this.setState({ response, busy: false });
       });
+    } else {
+      this.setState({ busy: false });
     }
   }
 
@@ -60,16 +75,10 @@ class SearchAppContainer extends Component {
   }
 
   render() {
-    const busy = this.state.busy ? <div className="container">
-      <h4>searching...</h4></div> : null;
-
-    return <div>
-      <SearchApp queryParams={this.getQueryParams(this.props)}
-                 searchResults={this.state.response}
-                 setQueryParams={this.setQueryParams.bind(this)}
-      />
-      {busy}
-    </div>;
+    return <SearchApp queryParams={this.getQueryParams(this.props)}
+                      searchResults={this.state.response}
+                      setQueryParams={this.setQueryParams.bind(this)}
+                      busy={this.state.busy} />;
   }
 }
 
