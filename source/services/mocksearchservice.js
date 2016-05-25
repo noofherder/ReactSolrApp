@@ -14,37 +14,46 @@ function makeMockResponse() {
     totalFound: 7526,
     start: 50,
     results: [
-      { id: 1,
-        title: "Current time is " + new Date().toUTCString(),
-        sample: "The <mark>Alaska boundary dispute</mark> was a territorial dispute between the United States and the United Kingdom, which then controlled Canada's foreign relations.",
-        source: "Wikipedia",
-        published: "14 May 2016",
-        wordcount: 2345
+      { id: "1",
+        name: "Samsung SpinPoint P120 SP2514N - hard drive - 250 GB - ATA-133",
+        features: ["7200RPM, 8MB cache, IDE Ultra ATA-133",
+          "NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor"],
+        price: 92.0,
+        inStock: true
       },
-      { id: 2,
-        title: "Grace Inez Crawford",
-        sample: "<mark>Grace Inez Crawford</mark>, also known as Grace Lovat Fraser (1889–1977) was a singer, actress, costume designer, translator of plays, and author of several books.",
-        source:  "Wikipedia",
-        published: "14 April 2016",
-        wordcount: 789
-      }
+      { id: "2",
+        name: "Maxtor DiamondMax 11 - hard drive - 500 GB - SATA-300",
+        features: ["SATA 3.0Gb/s, NCQ",
+          "8.5ms seek",
+          "16MB cache"],
+        price: 350.0,
+        inStock: true
+      },
+      { id: "3",
+        name: "Belkin Mobile Power Cord for iPod w/ Dock",
+        features: ["car power adapter, white"],
+        price: 19.95,
+        inStock: true
+      },
     ],
     facets: {
-      source: [
-        { label: "The Guardian", filter: "a1", selected: false },
-        { label: "The Independent", filter: "a2", selected: false },
-        { label: "Prospect", filter: "a3" , selected: true }
+      manufacturer: [
+        { label: "Corsair", count: 10, filter: "a1", selected: false },
+        { label: "Belkin", count: 8, filter: "a2", selected: true },
+        { label: "Canon", count: 3, filter: "a3", selected: false }
       ],
-      published: [
-        { label: "Last week", filter: "b1" , selected: false },
-        { label: "Last month", filter: "b2", selected: true },
-        { label: "Last year", filter: "b3", selected: false },
-        { label: "Last five years", filter: "b4", selected: false }
+      category: [
+        { label: "Electronics", count: 12, filter: "b1", selected: false },
+        { label: "Memory", count: 9, filter: "b2", selected: false },
+        { label: "Connector", count: 9, filter: "b3", selected: false },
+        { label: "Software", count: 7, filter: "b4", selected: false },
+        { label: "Printer", count: 3, filter: "b5", selected: false },
       ],
-      wordcount: [
-        { label: "1-100", filter: "c1", selected: false },
-        { label: "100-1000", filter: "c2", selected: false },
-        { label: "1000-any", filter: "c3", selected: false }
+      price_range: [
+        { label: "£50-100", count: 17, filter: "c1", selected: false },
+        { label: "£20-50", count: 4, filter: "c2", selected: false },
+        { label: "£100-200", count: 3, filter: "c3", selected: false },
+        { label: "£10-20", count: 1, filter: "c4", selected: false },
       ]
     }
   };

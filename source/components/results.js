@@ -8,16 +8,18 @@ import React, { PropTypes }  from 'react';
  */
 
 const Results = ({searchResults}) => {
-
   const results = searchResults.map((hit) => {
-    const sample = { __html: hit.sample };
+    const features = (hit.features && hit.features instanceof Array) ?
+      hit.features.map((feat) => <div key={feat}>{feat}</div>) : hit.features;
+
     return <div key={hit.id} className="app_hit">
-      <div><strong><a href="#">{hit.title}</a></strong></div>
-      <div className="app_vsp03" dangerouslySetInnerHTML={sample}></div>
+      <div><strong><a href="#">{hit.name}</a></strong></div>
+      <div className="app_vsp03">
+        {features}
+      </div>
       <div className="text-muted app_vsp03">
-        Source: <em>{hit.source}</em>
-        &nbsp;&nbsp;Published: <em>{hit.published}</em>
-        &nbsp;&nbsp;Wordcount: <em>{hit.wordcount}</em>
+        Price: <em>£{hit.price}</em>
+        &nbsp;&nbsp;In stock: <em>{hit.inStock ? "yes" : "no"}</em>
       </div>
     </div>;
   });

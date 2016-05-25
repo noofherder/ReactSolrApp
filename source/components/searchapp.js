@@ -31,16 +31,16 @@ class SearchApp extends Component {
         row3 = <div className="row app_vsp15">
           <Results searchResults={sr.results}/>
           <div className="col-sm-4">
-            <h5>Source:</h5>
-            <FacetList multiselect={true} facets={sr.facets.source}
+            <h5>Manufacturer:</h5>
+            <FacetList facets={sr.facets.manufacturer}
              onSetFilter={this.setFilter.bind(this)} />
 
-            <h5 className="app_vsp15">Published:</h5>
-            <FacetList facets={sr.facets.published}
+            <h5 className="app_vsp15">Category:</h5>
+            <FacetList multiselect={true} facets={sr.facets.category}
              onSetFilter={this.setFilter.bind(this)} />
 
-            <h5 className="app_vsp15">Word count:</h5>
-            <FacetList facets={sr.facets.wordcount}
+            <h5 className="app_vsp15">Price range:</h5>
+            <FacetList facets={sr.facets.price_range}
              onSetFilter={this.setFilter.bind(this)} />
           </div>
         </div>;
@@ -60,7 +60,7 @@ class SearchApp extends Component {
     }
 
     const busy = this.props.busy ? <h4>searching...</h4> : null;
-    
+
     return <div className="container">
       <div className="row">
         <QueryInput initialQuery={qp.query} onQuerySubmit={this.setQuery.bind(this)}/>
