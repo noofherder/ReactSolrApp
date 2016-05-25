@@ -48,12 +48,21 @@ function makeMockResponse() {
         { label: "Connector", count: 9, filter: "b3", selected: false },
         { label: "Software", count: 7, filter: "b4", selected: false },
         { label: "Printer", count: 3, filter: "b5", selected: false },
+        { label: "Blah", count: 3, filter: "b6", selected: false },
+        { label: "Blah", count: 3, filter: "b7", selected: false },
+        { label: "Blah", count: 3, filter: "b8", selected: false },
+        { label: "Blah", count: 3, filter: "b9", selected: false },
+        { label: "Blah", count: 3, filter: "b10", selected: false },
+        { label: "Blah", count: 3, filter: "b11", selected: false },
+        { label: "Blah", count: 3, filter: "b12", selected: false },
+        { label: "Blah", count: 3, filter: "b13", selected: false },
+        { label: "Blah", count: 3, filter: "b14", selected: false },
       ],
       price_range: [
         { label: "£50-100", count: 17, filter: "c1", selected: false },
         { label: "£20-50", count: 4, filter: "c2", selected: false },
         { label: "£100-200", count: 3, filter: "c3", selected: false },
-        { label: "£10-20", count: 1, filter: "c4", selected: false },
+        { label: "£10-20", count: 1, filter: "c4", selected: false }
       ]
     }
   };
