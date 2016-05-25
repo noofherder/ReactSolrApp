@@ -58,7 +58,7 @@ class FacetList extends Component {
      */
     const any = facets.find(x => x.selected) === undefined ?
       <em>any</em> :
-      <a href="#"><em>any</em></a>;
+      <a href="#" onClick={this.unsetAll.bind(this)}><em>any</em></a>;
 
     return <ul className="app_ul">
       {facitems}
@@ -70,6 +70,16 @@ class FacetList extends Component {
     if (this.props.onSetFilter) {
       this.props.onSetFilter(filter, apply);
     }
+  }
+
+  unsetAll(event) {
+    event.preventDefault();
+    this.props.facets.forEach((fac) => {
+      if (fac.selected) {
+        console.log("unsetting " + fac.filter);
+        this.setFilter(fac.filter, false);
+      }
+    });
   }
 }
 
