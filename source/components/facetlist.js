@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+const COLLAPSED_LENGTH = 5;
+
 /*
  * A component implementing a simple facet list.
  *
@@ -14,15 +16,28 @@ import React, { Component, PropTypes } from 'react';
  */
 
 class FacetList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      collapsed: true   // hide more than COLLAPSED_LENGTH?
+    }
+  }
+
   render() {
-    const facets = this.props.facets;
     const multiselect = this.props.multiselect;
+    const collapsible = this.props.facets.length > COLLAPSED_LENGTH;
     let facitems = null;
+
+    // collapse long facet list by default
+    const facets = (collapsible && this.state.collapsed) ?
+      this.props.facets.slice(0, COLLAPSED_LENGTH) : this.props.facets;
+
     /*
      * the <li> elements are different depending on whether we have multiselect
      * facets. If so, we use checkboxes to make this obvious. Otherwise, we
      * use links.
      */
+
     if (multiselect) {
       facitems = facets.map((x) => {
         const key = "facet_" + x.filter;
@@ -54,6 +69,14 @@ class FacetList extends Component {
     }
 
     /*
+     * display a collapse toggle?
+     */
+    const collapseLink = collapsible ?
+      <li><a href="#" onClick={this.toggleShowAll.bind(this)}>
+        <em>{this.state.collapsed ? "show more" : "show fewer"}</em>
+        </a></li> : "";
+
+    /*
      * the "any" link should only be active when a facet is selected
      */
     const any = facets.find(x => x.selected) === undefined ?
@@ -62,6 +85,7 @@ class FacetList extends Component {
 
     return <ul className="app_ul">
       {facitems}
+      {collapseLink}
       <li>{any}</li>
     </ul>;
   }
@@ -76,10 +100,14 @@ class FacetList extends Component {
     event.preventDefault();
     this.props.facets.forEach((fac) => {
       if (fac.selected) {
-        console.log("unsetting " + fac.filter);
         this.setFilter(fac.filter, false);
       }
     });
+  }
+
+  toggleShowAll(event) {
+    event.preventDefault();
+    this.setState({ collapsed: !this.state.collapsed });
   }
 }
 
