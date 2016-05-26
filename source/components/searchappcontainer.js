@@ -7,8 +7,6 @@ class SearchAppContainer extends Component {
     this.state = {
       response: null
     };
-    console.log("SearchAppContainer.constructor");
-    console.log(props);
   }
 
   /*
@@ -16,7 +14,6 @@ class SearchAppContainer extends Component {
    * query in the location.
    */
   componentDidMount() {
-    console.log("componentDidMount");
     this.doSearch(this.props);
   }
 
@@ -24,8 +21,6 @@ class SearchAppContainer extends Component {
    * something has changed, probably the location. Update the search results.
    */
   componentWillReceiveProps(newProps) {
-    console.log("componentWillReceiveProps");
-    console.log(newProps);
     this.doSearch(newProps);
   }
 
@@ -41,7 +36,6 @@ class SearchAppContainer extends Component {
     const qp = this.getQueryParams(props);
     if (qp.query) {
       this.props.searchService(qp, (response) => {
-        console.log("setting response from searchService");
         this.setState({ response, busy: false });
       });
     } else {
