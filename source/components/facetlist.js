@@ -48,14 +48,16 @@ class FacetList extends Component {
         return <li key={key}>
           <input id={key} type="checkbox" onChange={handler}
            value={x.filter} checked={x.selected}/>{" "}
-          <label for={key}>{x.label}</label>
+          <label for={key}>{x.label} ({x.count})</label>
         </li>;
       });
     } else {
       facitems = facets.map((x) => {
         const key = "facet_" + x.filter;
         if (x.selected) {
-          return <li key={key}><label className="app_bold">{x.label}</label></li>;
+          return <li key={key}><label className="app_bold">
+            {x.label + " (" + x.count + ")"}</label>
+          </li>;
         } else {
           const handler = (event) => {
             event.preventDefault();
@@ -63,6 +65,7 @@ class FacetList extends Component {
           };
           return <li key={key}>
             <a href="#" onClick={handler}><label>{x.label}</label></a>
+            { " (" + x.count + ")"}
           </li>;
         }
       });
