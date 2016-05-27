@@ -24,6 +24,13 @@ class FacetList extends Component {
   }
 
   render() {
+    if (this.props.facets == undefined ||
+        this.props.facets.length == 0)
+    {
+      // no facets, so return an empty list
+      return <ul className="app_ul"></ul>;
+    }
+
     const multiselect = this.props.multiselect;
     const collapsible = this.props.facets.length > COLLAPSED_LENGTH;
     let facitems = null;

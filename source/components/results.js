@@ -13,7 +13,7 @@ const Results = ({searchResults}) => {
       hit.features.map((feat) => <div key={feat}>{feat}</div>) : hit.features;
 
     return <div key={hit.id} className="app_hit">
-      <div><strong><a href="#">{hit.name}</a></strong></div>
+      <div><strong><a href="#">{hit.name || "no name, id=" + hit.id}</a></strong></div>
       <div className="app_vsp03">
         {features}
       </div>

@@ -4,6 +4,7 @@ import Stats from './stats';
 import Results from './results';
 import FacetList from './facetlist';
 import Pager from './pager';
+import { PAGE_SIZE } from '../conf/constants';
 
 import update from 'react-addons-update';
 
@@ -52,7 +53,7 @@ class SearchApp extends Component {
               <Pager numFound={sr.totalFound}
                 start={sr.start}
                 len={sr.results.length}
-                pageSize={10} />
+                pageSize={PAGE_SIZE} />
             </div>
           </div>;
         }
