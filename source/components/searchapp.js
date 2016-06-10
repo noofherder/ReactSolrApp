@@ -58,6 +58,7 @@ class SearchApp extends Component {
               <Pager numFound={sr.totalFound}
                 start={sr.start}
                 len={sr.results.length}
+                onSetPage={this.setPage.bind(this)}
                 pageSize={sr.pageSize} />
             </div>
           </div>;
@@ -74,6 +75,13 @@ class SearchApp extends Component {
       {row2} {row3} {row4}
       {busy}
     </div>;
+  }
+
+  setPage(newPage) {
+    // use react-addons-update to merge with existing query params
+    this.props.setQueryParams(
+      update(this.props.queryParams, { page: { $set: newPage }})
+    );
   }
 
   setQuery(newQuery) {

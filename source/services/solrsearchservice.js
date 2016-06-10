@@ -10,7 +10,7 @@ export function makeSearchService(conf) {
   return (queryParams, setSearchResults) => {
     // convert queryParams into Solr params
     let solrParams = {
-      offset: 0,
+      offset: conf.pageSize * (queryParams.page || 0),
       limit: conf.pageSize,
       query: queryParams.query,
       filter: [],

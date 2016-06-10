@@ -47,27 +47,32 @@ class SearchAppContainer extends Component {
   }
 
   /*
-   * should return { query: string, filters: list-of-strings }
+   * should return {
+   *  query: string,
+   *  filters: list-of-strings
+   *  page: number
+   * }
    */
   getQueryParams(props) {
     const query = props.location.query.q || '';
-
+    const page = parseInt(props.location.query.page || 0);
     let filters = [];
-    if (props.location.query.fq) {
-      if (props.location.query.fq instanceof Array) {
-        filters = props.location.query.fq.slice(0);
+    if (props.location.query.filt) {
+      if (props.location.query.filt instanceof Array) {
+        filters = props.location.query.filt.slice(0);
       } else {
-        filters = [ props.location.query.fq ];
+        filters = [ props.location.query.filt ];
       }
     }
 
-    return { query, filters };
+    return { query, filters, page };
   }
 
   setQueryParams(queryParams) {
     this.context.router.push({ query: {
       q: queryParams.query,
-      fq: queryParams.filters
+      filt: queryParams.filters,
+      page: queryParams.page
     }});
   }
 
