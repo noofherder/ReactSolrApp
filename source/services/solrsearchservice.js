@@ -1,5 +1,4 @@
-
-import { PAGE_SIZE } from '../conf/constants';
+import capitalize from 'capitalize';
 
 /*
  * conf should have the properties:
@@ -8,29 +7,23 @@ import { PAGE_SIZE } from '../conf/constants';
  */
 
 export function makeSearchService(conf) {
-  const fetchInit = {
-    method: 'GET',
-    mode: 'cors',
-    cache: 'no-cache'
-  };
-
   return (queryParams, setSearchResults) => {
     // convert queryParams into Solr params
     let solrParams = {
-      wt: 'json',
-      rows: PAGE_SIZE,
-      q: queryParams.query,
-      fq: [],
-      fl: conf.displayFields
+      offset: 0,
+      limit: conf.pageSize,
+      query: queryParams.query,
+      filter: [],
+      fields: conf.displayFields,
+      facet: {}
     };
 
-    // collect filters on same field into OR fqs
+    // collect filters on same field into OR filters
     if (queryParams.filters) {
       let filterFields = {};
       queryParams.filters.forEach((filter) => {
-        const bits = filter.split(':');
-        if (bits.length > 1) {
-          const field = bits[0];
+        const field = getFieldnameFromFilter(filter);
+        if (field) {
           if (filterFields[field] === undefined) {
             filterFields[field] = [];
           }
@@ -38,16 +31,55 @@ export function makeSearchService(conf) {
         }
       });
 
+      // tag each filter with the fieldname so we can exclude it from the
+      // corresponding facet count
       for (let key in filterFields) {
-        solrParams.fq.push(filterFields[key].join(" OR "));
+        solrParams.filter.push("{!tag=" + key.toUpperCase() + "}" +
+          filterFields[key].join(" OR "));
       }
     }
 
-    console.log(solrParams);
-    console.log(makeQueryString(solrParams));
+    // add faceting parameters
+    if (conf.facetFields) {
+      for (let key in conf.facetFields) {
+        const field = conf.facetFields[key];
+        solrParams.facet[key] = {
+          type: "terms",
+          field: field,
+          limit: conf.facetLimit,
+          domain: { excludeTags: field.toUpperCase() }
+        };
+      }
+    }
 
-    const url = conf.solrSearchUrl + "?" + makeQueryString(solrParams);
-    fetch(url, fetchInit)
+    // and for query facets
+    if (conf.facetQueries) {
+      for (let key in conf.facetQueries) {
+        for (let key2 in conf.facetQueries[key]) {
+          const filter = conf.facetQueries[key][key2];
+          const field = getFieldnameFromFilter(filter);
+          if (field) {
+            solrParams.facet[key + ":" + key2] = {
+              type: "query",
+              q: filter,
+              domain: { excludeTags: field.toUpperCase() }
+            }
+          }
+        }
+      }
+    }
+
+    const reqBody = JSON.stringify(solrParams);
+    //console.log("request body: ", reqBody);
+
+    // do the search. 'post' is required with a fetch() body. Solr doesn't mind
+    fetch(conf.solrSearchUrl, {
+      method: 'post',
+      body: reqBody,
+      headers: new Headers({
+      		'Content-Type': 'application/json'
+        })
+    })
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -56,33 +88,74 @@ export function makeSearchService(conf) {
       }
     })
     .then((response) => {
-      console.log('response =');
-      console.log(response);
-      const searchResults = makeSearchResults(response);
-      console.log('searchResults =');
-      console.log(searchResults);
+      //console.log("response: ", response);
+      const searchResults = makeSearchResults(
+        response, queryParams.filters, conf);
+      //console.log("searchResults: " + searchResults);
 
       setSearchResults(searchResults);
+    })
+    .catch((error) => {
+      alert("ERROR: " + error);   // FIXME very unfriendly
+      throw error;    // for stacktrace in console
     });
-//    .catch((error) => {
-//      alert("ERROR: " + error);
-//    });
-  };
+  }
 }
 
-function makeQueryString(query) {
-  return Object.keys(query)
-    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(query[key]))
-    .join("&")
-    .replace(/%20/g, "+");
-}
+function makeSearchResults(r, setFilters, conf) {
+  const facets = {};
 
-function makeSearchResults(r) {
+  // collect field facets
+  if (r.facets) {
+    if (conf.facetFields) {
+      for (let key in conf.facetFields) {
+        if (r.facets[key] && r.facets[key].buckets) {
+          facets[key] = r.facets[key].buckets.map(x => {
+            const filter = conf.facetFields[key] + ":\"" + x.val + "\"";
+            return {
+              label: capitalize(x.val),
+              count: x.count,
+              filter: filter,
+              selected: setFilters.includes(filter)
+            }
+          });
+        }
+      }
+    }
+
+    // collect query facets
+    if (conf.facetQueries) {
+      for (let key in conf.facetQueries) {
+        const theseFacets = [];
+        for (let key2 in conf.facetQueries[key]) {
+          if (r.facets[key + ":" + key2]) {
+            const filter = conf.facetQueries[key][key2];
+            theseFacets.push({
+              label: key2,
+              count: r.facets[key + ":" + key2].count,
+              filter: filter,
+              selected: setFilters.includes(filter)
+            });
+          }
+        }
+        //theseFacets.sort((x, y) => y.count - x.count);
+        facets[key] = theseFacets;
+      }
+    }
+  }
+
   return {
     queryTime: r.responseHeader.QTime,
     totalFound: r.response.numFound,
     start: r.response.start,
     results: r.response.docs,
-    facets: {}
-  }
+    facets: facets,
+    pageSize: conf.pageSize
+  };
+}
+
+export function getFieldnameFromFilter(filter) {
+  const i = filter.indexOf(":");
+  if (i == -1) return undefined;
+  return filter.slice(0, i);
 }

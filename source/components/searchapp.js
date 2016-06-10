@@ -4,7 +4,6 @@ import Stats from './stats';
 import Results from './results';
 import FacetList from './facetlist';
 import Pager from './pager';
-import { PAGE_SIZE } from '../conf/constants';
 
 import update from 'react-addons-update';
 
@@ -34,15 +33,21 @@ class SearchApp extends Component {
           <div className="col-sm-4">
             <h5>Manufacturer:</h5>
             <FacetList facets={sr.facets.manufacturer}
-             onSetFilter={this.setFilter.bind(this)} />
+             onSetFilter={this.setFilter.bind(this)}
+             onClearFilters={this.clearFilters.bind(this)}
+             fieldname="manu_id_s" />
 
             <h5 className="app_vsp15">Category:</h5>
             <FacetList multiselect={true} facets={sr.facets.category}
-             onSetFilter={this.setFilter.bind(this)} />
+             onSetFilter={this.setFilter.bind(this)}
+             onClearFilters={this.clearFilters.bind(this)}
+             fieldname="cat" />
 
             <h5 className="app_vsp15">Price range:</h5>
             <FacetList facets={sr.facets.price_range}
-             onSetFilter={this.setFilter.bind(this)} />
+             onSetFilter={this.setFilter.bind(this)}
+             onClearFilters={this.clearFilters.bind(this)}
+             fieldname="price" />
           </div>
         </div>;
 
@@ -53,7 +58,7 @@ class SearchApp extends Component {
               <Pager numFound={sr.totalFound}
                 start={sr.start}
                 len={sr.results.length}
-                pageSize={PAGE_SIZE} />
+                pageSize={sr.pageSize} />
             </div>
           </div>;
         }
@@ -66,8 +71,8 @@ class SearchApp extends Component {
       <div className="row">
         <QueryInput initialQuery={qp.query} onQuerySubmit={this.setQuery.bind(this)}/>
       </div>
-      {busy}
       {row2} {row3} {row4}
+      {busy}
     </div>;
   }
 
@@ -78,25 +83,39 @@ class SearchApp extends Component {
     );
   }
 
-  setFilter(newFilter, apply) {
-    // clone any existing filters into a new array
-    let filters = [];
-    if (this.props.queryParams.filters) {
-      filters = this.props.queryParams.filters.slice(0);
-    }
+  // set or unset a single filter
+  setFilter(filter, apply) {
 
-    if (apply && !filters.includes(newFilter)) {
+    // clone any existing filters into a new array
+    let filters = this.props.queryParams.filters ?
+                  this.props.queryParams.filters.slice(0) : [];
+
+    if (apply && !filters.includes(filter)) {
       // add the new filter
-      filters.push(newFilter);
+      filters.push(filter);
     }
     else if (!apply) {
       // or remove it
-      filters = filters.filter(x => x != newFilter);
+      filters = filters.filter(y => y != filter);
     }
 
     this.props.setQueryParams(
       update(this.props.queryParams, { filters: { $set: filters }})
     );
+  }
+
+  // remove all filters from the query params which have the supplied
+  // fieldname. This breaks the abstraction of filters being opaque strings
+  clearFilters(fieldname) {
+    const pref = fieldname + ":";
+    if (this.props.queryParams.filters) {
+      const filters = this.props.queryParams.filters.filter(x =>
+        !x.startsWith(pref));
+
+      this.props.setQueryParams(
+        update(this.props.queryParams, { filters: { $set: filters }})
+      );
+    }
   }
 }
 

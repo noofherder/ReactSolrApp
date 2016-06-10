@@ -30,8 +30,11 @@ class SearchAppContainer extends Component {
    * componentDidMount() works.
    */
   doSearch(props) {
-    // first, blank existing results and set busy indicator
-    this.setState({ response: null, busy: true });
+    // first, set busy indicator
+    // NOTE: don't set response to null here, as it will cause the facet lists
+    // to be unmounted/remounted if we change a filter, losing collapse state.
+    // i.e.:  this.setState({ response: null, busy: true });
+    this.setState({ busy: true });
 
     const qp = this.getQueryParams(props);
     if (qp.query) {
@@ -39,7 +42,7 @@ class SearchAppContainer extends Component {
         this.setState({ response, busy: false });
       });
     } else {
-      this.setState({ busy: false });
+      this.setState({ response: null, busy: false });
     }
   }
 

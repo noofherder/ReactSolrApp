@@ -19,6 +19,7 @@
   "homepage": "https://github.com/noofherder/ReactSolrApp#readme",
   "dependencies": {
     "bootstrap": "^3.3.6",
+    "capitalize": "^1.0.0",
     "react": "^15.1.0",
     "react-addons-update": "^15.1.0",
     "react-router": "^2.4.0",

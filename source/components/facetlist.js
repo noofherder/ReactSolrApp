@@ -100,19 +100,15 @@ class FacetList extends Component {
     </ul>;
   }
 
+  // set/unset a single filter
   setFilter(filter, apply) {
-    if (this.props.onSetFilter) {
-      this.props.onSetFilter(filter, apply);
-    }
+    this.props.onSetFilter(filter, apply);
   }
 
+  // unset all selected filters
   unsetAll(event) {
     event.preventDefault();
-    this.props.facets.forEach((fac) => {
-      if (fac.selected) {
-        this.setFilter(fac.filter, false);
-      }
-    });
+    this.props.onClearFilters(this.props.fieldname);
   }
 
   toggleShowAll(event) {
@@ -128,7 +124,9 @@ FacetList.propTypes = {
     filter: PropTypes.string,
     selected: PropTypes.bool
   })),
-  onSetFilter: PropTypes.func
+  fieldname: PropTypes.string,
+  onSetFilter: PropTypes.func,
+  onClearFilters: PropTypes.func
 };
 
 export default FacetList;
