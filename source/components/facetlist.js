@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { makeSetFilterAction, makeClearFiltersAction } from "../actions";
 
 const COLLAPSED_LENGTH = 5;
 
@@ -10,8 +11,7 @@ const COLLAPSED_LENGTH = 5;
  *    multiselect: true|false (defaults to false),
  *    facets: [ { label, filter, selected }, ...],
  *    fieldname: the Solr fieldname for this facet,
- *    onSetFilter: callback to set a filter,
- *    onClearFilters: callback to clear all filters for this facet
+ *    handleActions: handle one or more actions
  */
 
 class FacetList extends Component {
@@ -101,13 +101,22 @@ class FacetList extends Component {
 
   // set/unset a single filter
   setFilter(filter, apply) {
-    this.props.onSetFilter(filter, apply);
+    if (apply && ! this.props.multiselect) {
+      this.props.handleActions([
+        makeClearFiltersAction(this.props.fieldname),
+        makeSetFilterAction(filter, apply)
+      ]);
+    } else {
+      this.props.handleActions([
+        makeSetFilterAction(filter, apply)
+      ]);
+    }
   }
 
   // unset all selected filters
   unsetAll(event) {
     event.preventDefault();
-    this.props.onClearFilters(this.props.fieldname);
+    this.props.handleActions([makeClearFiltersAction(this.props.fieldname)]);
   }
 
   toggleShowAll(event) {
@@ -124,8 +133,7 @@ FacetList.propTypes = {
     selected: PropTypes.bool
   })),
   fieldname: PropTypes.string,
-  onSetFilter: PropTypes.func,
-  onClearFilters: PropTypes.func
+  handleActions: PropTypes.func
 };
 
 export default FacetList;

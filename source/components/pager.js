@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { makeSetPageAction } from "../actions";
 
 /*
  * A component implementing a simple pager.
@@ -8,7 +9,7 @@ import React, { Component, PropTypes } from 'react';
  *  numFound: total number of results found
  *  start: the offset of the first result on this page
  *  len: the number of results on this page
- *  onSetPage: callback to set the page
+ *  handleActions: handle one or more actions
  */
 
 class Pager extends Component {
@@ -64,7 +65,9 @@ class Pager extends Component {
   }
 
   setPage(newPage) {
-    this.props.onSetPage(newPage);
+    this.props.handleActions([
+      makeSetPageAction(newPage)
+    ]);
   }
 
 };
@@ -74,7 +77,7 @@ Pager.propTypes = {
   start: PropTypes.number.isRequired,
   len: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
-  onSetPage: PropTypes.func
+  handleActions: PropTypes.func
 };
 
 export default Pager;

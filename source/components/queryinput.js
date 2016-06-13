@@ -1,11 +1,12 @@
 import React, { Component, PropTypes }  from 'react';
+import { makeSetQueryAction } from "../actions";
 
 /*
  * A component implementing a simple query input
  *
  * props are:
  *  initialQuery: the initial query, which may be edited by the user
- *  onQuerySubmit: a function to call with the query text when the user submits it
+ *  handleActions: handle one or more actions
  */
 
 class QueryInput extends Component {
@@ -22,9 +23,7 @@ class QueryInput extends Component {
    */
   onSubmit(event) {
     event.preventDefault();
-    if (this.props.onQuerySubmit) {
-      this.props.onQuerySubmit(this.state.query);
-    }
+    this.props.handleActions([makeSetQueryAction(this.state.query)]);
   }
 
   onChange(event) {
@@ -47,7 +46,7 @@ class QueryInput extends Component {
 
 QueryInput.propTypes = {
   initialQuery: PropTypes.string,
-  onQuerySubmit: PropTypes.func
+  handleActions: PropTypes.func
 };
 
 export default QueryInput;
