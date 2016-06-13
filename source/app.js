@@ -7,7 +7,6 @@ import { makeSearchService } from './services/solrsearchservice';
 import solrConf from './conf/solrconf';
 
 const searchService = makeSearchService(solrConf);
-//const searchService = makeSearchService();
 
 const App = (props) =>
   <div>
@@ -21,7 +20,7 @@ const About = () =>
 const Contact = () =>
   <h1>Contact</h1>;
 
-// set the searchService on the SearchAppContainer.
+// set the searchService on the SearchAppContainer. 
 // need to explictly pass props.location from Router.
 const SearchAppContainer2 = (props) =>
   <SearchAppContainer location={props.location} searchService={searchService}/>;
