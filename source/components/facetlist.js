@@ -6,13 +6,12 @@ const COLLAPSED_LENGTH = 5;
  * A component implementing a simple facet list.
  *
  * props should be like:
- *    onSetFilter = callback function for setting a filter
- *    multiselect = true|false (defaults to false)
- *    facets = [
- *        { label, filter, selected }
- *    ]
- *
- * filter should be unique for each facet
+ *    onSetFilter: callback function for setting a filter,
+ *    multiselect: true|false (defaults to false),
+ *    facets: [ { label, filter, selected }, ...],
+ *    fieldname: the Solr fieldname for this facet,
+ *    onSetFilter: callback to set a filter,
+ *    onClearFilters: callback to clear all filters for this facet
  */
 
 class FacetList extends Component {

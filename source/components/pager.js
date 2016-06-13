@@ -8,6 +8,7 @@ import React, { Component, PropTypes } from 'react';
  *  numFound: total number of results found
  *  start: the offset of the first result on this page
  *  len: the number of results on this page
+ *  onSetPage: callback to set the page
  */
 
 class Pager extends Component {
