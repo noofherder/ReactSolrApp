@@ -2,8 +2,12 @@ import capitalize from 'capitalize';
 
 /*
  * conf should have the properties:
- *    solrSearchUrl   (e.g. http://localhost:8983/solr/techproducts/select)
- *    displayFields   (e.g. ["id", "name", "text"])
+ *    solrSearchUrl:  (e.g. http://localhost:8983/solr/techproducts/select)
+ *    displayFields:  (e.g. ["id", "name", "text"])
+ *    pageSize:       number of results per page
+ *    facetFields:    config for field facets
+ *    facetQueries:   config for query facets
+ *    facetLimit:     max number of items to return for each facet
  */
 
 export function makeSearchService(conf) {
@@ -70,7 +74,6 @@ export function makeSearchService(conf) {
     }
 
     const reqBody = JSON.stringify(solrParams);
-    //console.log("request body: ", reqBody);
 
     // do the search. 'post' is required with a fetch() body. Solr doesn't mind
     fetch(conf.solrSearchUrl, {
@@ -88,10 +91,8 @@ export function makeSearchService(conf) {
       }
     })
     .then((response) => {
-      //console.log("response: ", response);
       const searchResults = makeSearchResults(
         response, queryParams.filters, conf);
-      //console.log("searchResults: " + searchResults);
 
       setSearchResults(searchResults);
     })
@@ -138,7 +139,6 @@ function makeSearchResults(r, setFilters, conf) {
             });
           }
         }
-        //theseFacets.sort((x, y) => y.count - x.count);
         facets[key] = theseFacets;
       }
     }
